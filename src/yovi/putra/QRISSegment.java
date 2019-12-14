@@ -1,61 +1,68 @@
 package yovi.putra;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /***
  * @author yoviekaputra
  */
 public class QRISSegment {
 	private String rootId;
+	private String field;
 	private int length;
-	private String data;
-	private boolean hasChild;
-	private Map<String, QRISSegment> childs;
+	private Object data;
 	
-	public QRISSegment(String rootId, boolean hasChild) {
-		this.rootId = rootId;
-		this.hasChild = hasChild;
-		this.childs = new HashMap<String, QRISSegment>();
+	public QRISSegment() {
+		// TODO Auto-generated constructor stub
 	}
-	public QRISSegment(String rootId, boolean hasChild, Map<String, QRISSegment> childs) {
+	
+	public QRISSegment(String rootId, int length, Object data) {
+		super();
 		this.rootId = rootId;
-		this.hasChild = hasChild;
-		this.childs = childs;
+		this.length = length;
+		this.data = data;
 	}
+	
+	public QRISSegment(String rootId, String field, int length, Object data) {
+		super();
+		this.rootId = rootId;
+		this.field = field;
+		this.length = length;
+		this.data = data;
+	}
+
 	public String getRootId() {
 		return rootId;
 	}
+
 	public void setRootId(String rootId) {
 		this.rootId = rootId;
 	}
+
 	public int getLength() {
 		return length;
 	}
+
 	public void setLength(int length) {
 		this.length = length;
 	}
-	public String getData() {
+
+	public Object getData() {
 		return data;
 	}
-	public void setData(String data) {
+
+	public void setData(Object data) {
 		this.data = data;
 	}
-	public boolean isHasChild() {
-		return hasChild;
+
+	public String getField() {
+		return field;
 	}
-	public void setHasChild(boolean hasChild) {
-		this.hasChild = hasChild;
+
+
+	public void setField(String field) {
+		this.field = field;
 	}
-	public Map<String, QRISSegment> getChilds() {
-		return childs;
-	}
-	public void setChilds(Map<String, QRISSegment> childs) {
-		this.childs = childs;
-	}
+
 	@Override
 	public String toString() {
-		return "Segment [rootId=" + rootId + ", length=" + length + ", data=" + data + ", hasChild=" + hasChild
-				+ ", childs=" + childs + "]";
+		return "ID[" + rootId + "] F[" + field + "] DATA[" + length + "][" + data + "]";
 	}
 }
