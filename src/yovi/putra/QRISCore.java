@@ -17,10 +17,21 @@ public class QRISCore {
     }
 
 	public List<QRISSegment> parsing(String payload) {
-		List<QRISSegment> segment = parsingRootId(payload, qrisField);
-		parsingMerchantInfo(segment);
-		parsingAddionalData(segment);
-		return segment;
+		if (isQRISValid(payload)) {
+			List<QRISSegment> segment = parsingRootId(payload, qrisField);
+			parsingMerchantInfo(segment);
+			parsingAddionalData(segment);
+			return segment;			
+		} else {
+			return new ArrayList<>();
+		}
+		
+	}
+	
+	public void print(List<QRISSegment> qris) {
+		for (QRISSegment q : qris) {
+			System.out.println(q);
+		}
 	}
 	
 	private List<QRISSegment> parsingRootId(String payload, Properties qrisField) {
@@ -114,9 +125,11 @@ public class QRISCore {
 			String qrCRC = qrdata.substring(qrdata.length()-4).toUpperCase();
 			
 			if (qrDataNonCRC.startsWith("00") && qrCRC.equals(checkCRC(qrDataNonCRC.getBytes()))) {
+				System.out.println("QRIS payload valid");
 				return true;
 			}
 		}
+		System.err.println("QRIS payload invalid");
 		return false;
 	}
 	
