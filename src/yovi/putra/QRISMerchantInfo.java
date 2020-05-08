@@ -52,7 +52,11 @@ public class QRISMerchantInfo extends Object {
 
 	@Override
 	public String toString() {
-		return "{globalId=" + globalId + ", mPAN=" + mPAN + ", mCriteria=" + mCriteria + ", mId=" + mId
+		return "{\n"
+				+ "\tglobalId=" + globalId + ", \n"
+				+ "\tmPAN=" + mPAN + ", \n"
+				+ "\tmCriteria=" + mCriteria + ", \n"
+				+ "\tmId=" + mId +"\n"
 				+ "}";
 	}
 }

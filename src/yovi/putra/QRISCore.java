@@ -40,24 +40,29 @@ public class QRISCore {
 		for (int tag = 0; tag < 100; tag++) {
 			String rootId = String.format("%02d", tag);
 			
-			if (payload.startsWith(rootId)) {
-				// clean root id
-				payload = payload.substring(2);
-				// get data length 
-				int len = Integer.parseInt(payload.substring(0,2));
-				//remove data length
-				payload = payload.substring(2);
-				//get data
-				String data = payload.substring(0, len);
-				/* get field name */
-				String field = getFieldName(qrisField, rootId);
-				
-				seg = new QRISSegment(rootId, field, len, data);
-				segment.add(seg);
-				
-				
-				//update payload data to next parsing
-				payload = payload.substring(len);
+			try {
+				if (payload.startsWith(rootId)) {
+					// clean root id
+					payload = payload.substring(2);
+					// get data length 
+					int len = Integer.parseInt(payload.substring(0,2));
+					//remove data length
+					payload = payload.substring(2);
+					//get data
+					String data = payload.substring(0, len);
+					/* get field name */
+					String field = getFieldName(qrisField, rootId);
+					
+					seg = new QRISSegment(rootId, field, len, data);
+					segment.add(seg);
+					
+					
+					//update payload data to next parsing
+					payload = payload.substring(len);
+				}
+			} catch (Exception e) {
+				System.err.println("Error: " + rootId);
+				System.err.println(payload);
 			}
 		}
 		return segment;
@@ -123,8 +128,10 @@ public class QRISCore {
 		if (qrdata != null && qrdata.length() > 4) {
 			String qrDataNonCRC = qrdata.substring(0, qrdata.length() - 4);
 			String qrCRC = qrdata.substring(qrdata.length()-4).toUpperCase();
+			String checkCRC = checkCRC(qrDataNonCRC.getBytes()).toUpperCase();
 			
-			if (qrDataNonCRC.startsWith("00") && qrCRC.equals(checkCRC(qrDataNonCRC.getBytes()))) {
+			System.err.println("QR CRC: " + qrCRC + ", System CRC: " + checkCRC);			
+			if (qrDataNonCRC.startsWith("00") && qrCRC.equalsIgnoreCase(checkCRC)) {
 				System.out.println("QRIS payload valid");
 				return true;
 			}
@@ -148,7 +155,7 @@ public class QRISCore {
         }
         crc &= 0xffff;
         
-        sCRC = Integer.toHexString(crc).toUpperCase();
+        sCRC = String.format("%04x", crc);
         return sCRC;
 	}
 }
