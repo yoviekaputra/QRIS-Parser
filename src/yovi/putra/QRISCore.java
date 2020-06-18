@@ -130,7 +130,7 @@ public class QRISCore {
 			String qrCRC = qrdata.substring(qrdata.length()-4).toUpperCase();
 			String checkCRC = checkCRC(qrDataNonCRC.getBytes()).toUpperCase();
 			
-			System.err.println("QR CRC: " + qrCRC + ", System CRC: " + checkCRC);			
+			System.err.println("QR CRC: " + qrCRC + ", System CRC: " + checkCRC + "\n");			
 			if (qrDataNonCRC.startsWith("00") && qrCRC.equalsIgnoreCase(checkCRC)) {
 				System.out.println("QRIS payload valid");
 				return true;
