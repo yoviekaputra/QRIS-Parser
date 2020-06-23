@@ -8,10 +8,16 @@ import java.util.Properties;
  * @author yoviekaputra
  */
 public class QRISCore {
-    Properties qrisField = null;
-    Properties qrisFieldAdditionalData = null;
-    		
+    private Properties qrisField = null;
+    private Properties qrisFieldAdditionalData = null;
+    private QRISCoreLogListener logListener = null;
+    
     public QRISCore() {
+    	new QRISCore(null);
+    }
+    
+    public QRISCore(QRISCoreLogListener logListener) {
+    	this.logListener = logListener;
     	qrisField = PropertiesUtils.getProperties(getClass(), "qrisfield.prop");
     	qrisFieldAdditionalData = PropertiesUtils.getProperties(getClass(), "qrisadditionaldata.prop");
     }
@@ -30,7 +36,7 @@ public class QRISCore {
 	
 	public void print(List<QRISSegment> qris) {
 		for (QRISSegment q : qris) {
-			System.out.println(q);
+			printLog(q.toString());
 		}
 	}
 	
@@ -61,8 +67,8 @@ public class QRISCore {
 					payload = payload.substring(len);
 				}
 			} catch (Exception e) {
-				System.err.println("Error: " + rootId);
-				System.err.println(payload);
+				printLog("Error: " + rootId);
+				printLog(payload);
 			}
 		}
 		return segment;
@@ -130,13 +136,13 @@ public class QRISCore {
 			String qrCRC = qrdata.substring(qrdata.length()-4).toUpperCase();
 			String checkCRC = checkCRC(qrDataNonCRC.getBytes()).toUpperCase();
 			
-			System.err.println("QR CRC: " + qrCRC + ", System CRC: " + checkCRC + "\n");			
+			printLog("QR CRC: " + qrCRC + ", System CRC: " + checkCRC + "\n");			
 			if (qrDataNonCRC.startsWith("00") && qrCRC.equalsIgnoreCase(checkCRC)) {
-				System.out.println("QRIS payload valid");
+				printLog("QRIS payload valid");
 				return true;
 			}
 		}
-		System.err.println("QRIS payload invalid");
+		printLog("QRIS payload invalid");
 		return false;
 	}
 	
@@ -157,5 +163,10 @@ public class QRISCore {
         
         sCRC = String.format("%04x", crc);
         return sCRC;
+	}
+	
+	private void printLog(String message) {
+		if (logListener != null) logListener.logging(message);
+		System.out.println(message);
 	}
 }
