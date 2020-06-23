@@ -18,7 +18,7 @@ import javax.swing.JScrollPane;
 
 public class UIMain implements ActionListener, QRISCoreLogListener {
 
-	private JFrame frame;
+	private JFrame frmQrisParser;
 	private JTextArea textAreaOutput;
 	private JTextArea textAreaInput;
 	
@@ -34,7 +34,7 @@ public class UIMain implements ActionListener, QRISCoreLogListener {
 			public void run() {
 				try {
 					UIMain window = new UIMain();
-					window.frame.setVisible(true);
+					window.frmQrisParser.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -53,9 +53,10 @@ public class UIMain implements ActionListener, QRISCoreLogListener {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 566, 422);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmQrisParser = new JFrame();
+		frmQrisParser.setTitle("QRIS Parser (https://github.com/yovi-ep)");
+		frmQrisParser.setBounds(100, 100, 566, 422);
+		frmQrisParser.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JButton btnProcess = new JButton("Process");
 		btnProcess.addActionListener(this);
@@ -68,7 +69,7 @@ public class UIMain implements ActionListener, QRISCoreLogListener {
 		JScrollPane scrollPane = new JScrollPane();
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
+		GroupLayout groupLayout = new GroupLayout(frmQrisParser.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.TRAILING)
 				.addGroup(groupLayout.createSequentialGroup()
@@ -111,7 +112,7 @@ public class UIMain implements ActionListener, QRISCoreLogListener {
 		textAreaOutput.setWrapStyleWord(true);
 		scrollPane.setViewportView(textAreaOutput);
 		textAreaOutput.setLineWrap(true);
-		frame.getContentPane().setLayout(groupLayout);
+		frmQrisParser.getContentPane().setLayout(groupLayout);
 	}
 
 	@Override
